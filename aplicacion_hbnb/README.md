@@ -1,0 +1,1 @@
+voy a intentar implementar la base de datos en la app para completar con lo unico que me falto
