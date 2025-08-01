@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 places_ns = Namespace('places', description='Place operations')
 api = Namespace('reviews', description='Review operations')
@@ -22,8 +23,18 @@ class ReviewList(Resource):
     @api.expect(review_create_model, validate=True)
     @api.response(201, 'Review successfully created / Reseña creada exitosamente')
     @api.response(400, 'Invalid input data / Datos de entrada no válidos')
+    @api.response(404, 'Place not found')
+    @jwt_required()
     def post(self):
         review_data = api.payload
+
+        current_user_id = get_jwt_identity()
+        review_data['user_id'] = current_user_id
+        place = facade.get_place(review_data['place_id'])
+        if not place:
+            return {'error': 'Place not found'}, 404
+        if review_data['user_id'] == place.owner_id:
+            return {'error': 'no puedes hacer reviews en tu place'}, 400
         try:
             review_data['rating'] = float(str(review_data['rating']).replace(',', '.'))
             new_review = facade.create_review(review_data)
@@ -52,8 +63,13 @@ class ReviewResource(Resource):
     @api.response(200, 'Review updated successfully / Reseña actualizada exitosamente')
     @api.response(404, 'Review not found / Reseña no encontrada')
     @api.response(400, 'Invalid input data / Datos de entrada no válidos')
+    @api.response(403, 'Permission denied')
+    @jwt_required()
     def put(self, review_id):
         review_data = api.payload
+        current_user_id = get_jwt_identity()
+        if review_data['user_id'] != current_user_id:
+            return {'error': 'Permission denied'}, 403
         try:
             if 'rating' in review_data:
                 review_data['rating'] = float(str(review_data['rating']).replace(',', '.'))
@@ -64,8 +80,14 @@ class ReviewResource(Resource):
 
     @api.response(200, 'Review deleted successfully / Reseña eliminada exitosamente')
     @api.response(404, 'Review not found / Reseña no encontrada')
+    @api.response(403, 'Permission denied')
+    @jwt_required()
     def delete(self, review_id):
         try:
+            review = facade.get_review(review_id)
+            current_user = get_jwt_identity()
+            if current_user != review['user_id']:
+                return {'error': 'Permission denied'}, 403
             facade.delete_review(review_id)
             return {'message': 'Review deleted successfully'}, 200
         except ValueError as e:
@@ -76,6 +98,7 @@ class ReviewResource(Resource):
 class PlaceReviewList(Resource):
     @places_ns.response(200, 'List of reviews for the place retrieved successfully')
     @places_ns.response(404, 'Place not found')
+    @jwt_required()
     def get(self, place_id):
         try:
             reviews = facade.get_reviews_by_place(place_id)

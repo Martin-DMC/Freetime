@@ -3,15 +3,13 @@
 in this module we define the class Review(), the template of the
 future entitis of review
 """
-from app.models.base_model import BaseModel
+from app.models.base_model import BaseModel, db
 
 class Review(BaseModel):
-    def __init__(self, text, rating, place_id, user_id):
-        super().__init__()
-        self.text = text
-        self.rating = rating
-        self.place_id = place_id
-        self.user_id = user_id
+    text = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
 
     def update(self, data):
         for key in ['text', 'rating', 'place_id', 'user_id']:

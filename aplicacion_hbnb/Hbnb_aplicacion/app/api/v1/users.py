@@ -6,6 +6,7 @@ of the client since the diferents routes of our web app
 
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import re
 
 api = Namespace('users', description='User operations')
@@ -20,7 +21,8 @@ def validate_email_format(email):
 user_model = api.model('User', {
     'first_name': fields.String(required=True, min_length=1, description='First name of the user'),
     'last_name': fields.String(required=True, min_length=1, description='Last name of the user'),
-    'email': fields.String(required=True, min_length=1, description='Email of the user', validate=validate_email_format)
+    'email': fields.String(required=True, min_length=1, description='Email of the user', validate=validate_email_format),
+    'contraseña': fields.String(required=True, min_length=6, description='password of the user', validate=validate_email_format)
 })
 
 @api.route('/')
@@ -41,6 +43,7 @@ class UserList(Resource):
         return new_user, 201
 
     @api.response(200, 'all users')
+    @jwt_required()
     def get(self):
         users = facade.get_users()
         return users, 200
@@ -50,6 +53,7 @@ class UserList(Resource):
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
+    @jwt_required()
     def get(self, user_id):
         """Get user details by ID"""
         user = facade.get_user(user_id)
@@ -59,7 +63,12 @@ class UserResource(Resource):
 
     @api.response(200, 'User update successfully')
     @api.response(404, 'User not found')
+    @api.response(403, 'Permission denied')
+    @jwt_required()
     def put(self, user_id):
+        current_user_id = get_jwt_identity()
+        if current_user_id != user_id:
+            return {'error': 'no autorizado'}, 403
         updated_data = api.payload
         updated_user = facade.update_user(user_id, updated_data)
 
@@ -70,10 +79,14 @@ class UserResource(Resource):
 
     @api.response(200, 'User deleted successfully')
     @api.response(404, 'User not found')
+    @api.response(403, 'Permission denied')
+    @jwt_required()
     def delete(self, user_id):
+        current_user_id = get_jwt_identity()
+        if current_user_id != user_id:
+            return {'error': 'no autorizado'}, 403
         try:
             facade.delete_user(user_id)
             return {'message': 'User deleted successfully'}, 200
         except ValueError:
             return {'error': 'User not found'}, 404
-        

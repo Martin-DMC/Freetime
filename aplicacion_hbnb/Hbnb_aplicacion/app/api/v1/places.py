@@ -6,6 +6,7 @@ of the client since the diferents routes of our web app
 
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('places', description='Place operations')
 
@@ -46,9 +47,13 @@ class PlaceList(Resource):
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Ubication already registred')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
         """Register a new place"""
         place_data = api.payload
+
+        current_user_id = get_jwt_identity()
+        place_data['owner_id'] = current_user_id
 
         # Validar campos esenciales
         required_fields = ['title', 'description', 'price', 'latitude', 'longitude', 'owner_id']
@@ -82,6 +87,21 @@ class PlaceList(Resource):
         places = facade.get_all_places()
         return places, 200
 
+    @api.response(404, 'Place not found')
+    @api.response(403, 'Permission denied')
+    @api.response(200, 'Place deleted successfully')
+    @jwt_required()
+    def delete(self, place_id):
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'Place not found'}, 404
+        current_user_id = get_jwt_identity()
+        if current_user_id != place.owner_id:
+            return {'error': 'no autorizado'}, 403
+        retorno, estado = facade.delete_place(place_id)
+        return retorno, estado
+
+
 @api.route('/<place_id>')
 class PlaceResource(Resource):
     @api.response(200, 'Place details retrieved successfully')
@@ -96,7 +116,9 @@ class PlaceResource(Resource):
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Permission denied')
     @api.response(500, 'Internal server error')
+    @jwt_required()
     def put(self, place_id):
         """Update a place's information"""
         update_data = api.payload
@@ -105,6 +127,10 @@ class PlaceResource(Resource):
         place = facade.place_repo.get(place_id)  # ← Es importante que sea el objeto, no un dict
         if place is None:
             return {'error': 'Place not found'}, 404
+        
+        current_user_id = get_jwt_identity()
+        if current_user_id != place.owner_id:
+            return {'error': 'no autorizado'}, 403
 
         # No permitir modificar latitud ni longitud
         if 'latitude' in update_data and update_data['latitude'] != place.latitud:
