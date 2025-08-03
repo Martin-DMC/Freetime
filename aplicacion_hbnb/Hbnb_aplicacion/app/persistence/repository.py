@@ -5,6 +5,7 @@ be the improvise data base
 from abc import ABC, abstractmethod
 from app import db  # Assuming you have set up SQLAlchemy in your Flask app
 from app.models import User, Place, Review, Amenity
+from app.models.amenity import place_amenity_association
 
 class Repository(ABC):
     @abstractmethod
@@ -103,3 +104,14 @@ class SQLAlchemyRepository(Repository):
 
     def get_by_attribute(self, attr_name, attr_value):
         return self.model.query.filter(getattr(self.model, attr_name) == attr_value).first()
+    
+    def get_by_place_id(self, place_id):
+        amenities = db.session.query(Amenity).join(place_amenity_association,\
+                Amenity.id == place_amenity_association.c.amenity_id).\
+                filter(place_amenity_association.c.place_id == place_id).all()
+        return amenities
+
+    def get_reviews_by_place(self, place_id):
+        reviews = db.session.query(Review).filter(Review.place_id == place_id).all()
+        return reviews
+

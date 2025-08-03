@@ -7,6 +7,7 @@ from app.models.user import User
 from app.models.place import Place
 from app.models.amenity import Amenity
 from app.models.review import Review
+from app.models.base_model import db
 
 
 
@@ -43,13 +44,20 @@ class HBnBFacade:
 
     # =================== AMENITIES ===================
     def create_amenity(self, amenity_data):
+        if 'name' not in amenity_data:
+            raise ValueError("Missing 'name' for Amenity")
+        new_amenity = Amenity(name=amenity_data['name'])
+        db.session.add(new_amenity)
+        db.session.commit()
         place_id = amenity_data.get('place_id')
-        if not place_id or not self.place_repository.get(place_id):
-            return {'error': 'Invalid or missing place_id'}
-
-        amenity = Amenity(name=amenity_data['name'], place_id=place_id)
-        self.amenity_repository.add(amenity)
-        return amenity.to_dict()
+        if place_id:
+            place = db.session.query(Place).get(place_id)
+            if place:
+                place.add_amenity(new_amenity)
+                db.session.commit()
+            else:
+                raise ValueError(f"Place not found.")
+        return new_amenity
 
     def get_amenity(self, amenity_id):
         amenity = self.amenity_repository.get(amenity_id)

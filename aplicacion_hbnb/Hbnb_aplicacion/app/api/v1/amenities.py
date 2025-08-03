@@ -25,16 +25,18 @@ class AmenityList(Resource):
     @api.expect(amenity_create_model, validate=True)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
+    @api.response(404, 'Place not found')
     def post(self):
         amenity_data = api.payload
         existing_amenity = facade.get_amenity_by_name(amenity_data['name'].strip())
         if existing_amenity:
             return {'error': 'Amenity already registered'}, 400
 
-        new_amenity = facade.create_amenity(amenity_data)
-        if 'error' in new_amenity:
-            return new_amenity, 400
-        return new_amenity, 201
+        try:
+            new_amenity = facade.create_amenity(amenity_data)
+            return new_amenity.to_dict(), 201
+        except ValueError as e:
+            return {'error': str(e)}, 404
 
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):

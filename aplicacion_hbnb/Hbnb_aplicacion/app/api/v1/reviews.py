@@ -33,7 +33,7 @@ class ReviewList(Resource):
         place = facade.get_place(review_data['place_id'])
         if not place:
             return {'error': 'Place not found'}, 404
-        if review_data['user_id'] == place.owner_id:
+        if review_data['user_id'] == place['owner_id']:
             return {'error': 'no puedes hacer reviews en tu place'}, 400
         try:
             review_data['rating'] = float(str(review_data['rating']).replace(',', '.'))
@@ -67,8 +67,9 @@ class ReviewResource(Resource):
     @jwt_required()
     def put(self, review_id):
         review_data = api.payload
+        review = facade.get_review(review_id)
         current_user_id = get_jwt_identity()
-        if review_data['user_id'] != current_user_id:
+        if review.user_id != current_user_id:
             return {'error': 'Permission denied'}, 403
         try:
             if 'rating' in review_data:

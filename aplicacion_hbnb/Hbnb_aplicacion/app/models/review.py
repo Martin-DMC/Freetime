@@ -6,6 +6,8 @@ future entitis of review
 from app.models.base_model import BaseModel, db
 
 class Review(BaseModel):
+    __tablename__ = 'reviews'
+
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="../static/images/icon.png">
+</head>
+<body>
+    <main>
+        <!-- Add something to idfentify the place you're reviewing -->
+        <form id="review-form">
+            <h2>Add a Review</h2>
+            <label class="text-add-review" for="review-text">Your Review:</label>
+            <textarea class="input-add-review" id="review-text" name="review-text" required></textarea>
+            <label class="text-add-review" for="stars_rating">Rating:</label>
+            <select class="input-add-review" id="stars_rating" name="starts_rating" required>
+                <!-- Options for rating -->
+                <option value="1" class="cant_stars"><b>1 star</b></option>
+                <option value="2" class="cant_stars"><b>2 stars</b></option>
+                <option value="3" class="cant_stars"><b>3 stars</b></option>
+                <option value="4" class="cant_stars"><b>4 stars</b></option>
+                <option value="5" class="cant_stars"><b>5 stars</b></option>
+            </select>
+            <button class="boton-reviews" type="submit">Submit Review</button>
+        </form>
+    </main>
+    <script src="scripts.js"></script>
+</body>
+</html>

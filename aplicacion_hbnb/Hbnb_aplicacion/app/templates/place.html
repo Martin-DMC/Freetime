@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details</title>
+    <link rel="icon" href="../static/images/icon.png">
+    <link rel="stylesheet" href="../static/css/style-places.css">
+</head>
+<body>
+    {% include "header.html" %}
+    <main>
+        <button class="hacer-reserva" id="hacerReserva">Hacer reserva</button>
+        <section id="place-details">
+            <!-- Place details will be populated dynamically -->
+            <div class="details-show" id="details-show">
+
+            </div>
+        </section>
+        <section id="reviews">
+            <!-- Reviews will be populated dynamically -->
+            <h2 class="title-reviews">Reviews:</h2>
+            <div class="ventana-container">
+                <div class="container" id="container">
+                    <div class="reviews-list">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="add-review">
+            {% include "add_review.html" %}
+        </section>
+    </main>
+    <section class="fondo-ventana-emergente" id="ventanaEmergente">
+        <h2 class="title-ventana-emergente">Hacer reserva!!!</h2>
+        <div class="contenedor-lista">
+            <p>Seleccione o ingrese el tiempo de su estadia</p>
+            <form class="form-reserva" id="formReserva" action="">
+                <label class="title-inputs" for="check-in">Fecha de ingreso</label>
+                <input type="date" name="check_in" id="checkIn">
+                <label class="title-inputs" for="check-out">Fecha de salida</label>
+                <input type="date" name="check_out" id="checkOut">
+                <button type="submit" id="botonReservar"></button>
+            </form>
+            <label class="botones-ventana" for="botonReservar">Reservar</label>
+            <button class="botones-ventana boton__x" id="closeVentanaEmergente" >X</button>
+        </div>
+    </section>
+    {% include "footer.html" %}
+    <script src="../static/javascript/scripts-places.js"></script>
+</body>
+</html>
