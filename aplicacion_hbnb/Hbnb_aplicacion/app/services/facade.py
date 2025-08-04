@@ -79,6 +79,19 @@ class HBnBFacade:
     def get_amenity_by_name(self, name):
         return self.amenity_repository.get_by_attribute('name', name)
 
+    def associate_amenity_with_place(self, place_id, amenity_name):
+        place = self.place_repository.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+
+        amenity = self.amenity_repository.get_by_attribute('name', amenity_name)
+        if not amenity:
+            raise ValueError("Amenity not found")
+
+        place.add_amenity(amenity)
+        db.session.commit()
+        return place
+
     # =================== PLACES ===================
     def create_place(self, place_data):
         price = place_data['price']
@@ -110,7 +123,7 @@ class HBnBFacade:
 
         amenities = self.amenity_repository.get_by_place_id(place_id)
 
-        place_dict = place.to_dict()
+        place_dict = place.to_full_info()
         place_dict['amenities'] = [
             {'id': amenity.id, 'name': amenity.name} for amenity in amenities
         ] if amenities else []
@@ -156,6 +169,11 @@ class HBnBFacade:
         self.place_repository.delete(place_id)
         return {'message': 'Place deleted successfully'}, 200
 
+    def get_places_by_owner_id(self, owner_id):
+        print(f"Buscando lugares para el owner_id: {owner_id}")
+        places = self.place_repository.get_by_attribute('owner_id', owner_id)
+        print(f"Se encontraron {len(places)} lugares.")
+        return places
     # =================== REVIEWS ===================
     def create_review(self, review_data):
         if 'text' not in review_data or not review_data['text']:

@@ -150,4 +150,26 @@ class PlaceResource(Resource):
             return updated_place if isinstance(updated_place, dict) else updated_place.to_dict(), 200
 
         return {'error': 'Internal server error'}, 500
-    
+
+@api.route('/<place_id>/amenities')
+class PlaceAmenityAssociation(Resource):
+    @api.response(201, 'Amenity associated successfully')
+    @api.response(400, 'Invalid input')
+    @api.response(404, 'Place or Amenity not found')
+    @jwt_required()
+    def post(self, place_id):
+        """Asocia una amenidad existente con un lugar."""
+        amenity_data = api.payload
+        amenity_name = amenity_data.get('name')
+
+        if not amenity_name:
+            return {'error': 'Amenity name is required'}, 400
+
+        try:
+            facade.associate_amenity_with_place(place_id, amenity_name)
+            return {'message': 'Amenity associated with place'}, 201
+
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except Exception as e:
+            return {'error': str(e)}, 500

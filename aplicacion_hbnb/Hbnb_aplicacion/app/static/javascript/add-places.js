@@ -183,7 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
             addAmenitiesToPlace.addEventListener('click', async () => {
                 let amenitiesSelected = [];
                 let arrayPromesas = [];
-                const url = 'http://127.0.0.1:5000/api/v1/amenities/';
+                const url = 'http://127.0.0.1:5000/api/v1';
+                const urlfull = `${url}/places/${place_id}/amenities`;
                 const listCheckbox = document.querySelectorAll('[name="amenitisCreadas"]');
                 listCheckbox.forEach(checkbox => {
                     if (checkbox.checked === true) {
@@ -192,8 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 amenitiesSelected.forEach(amenityName => {
                     const sendDataAmenity = {
-                        'name': amenityName,
-                        'place_id': place_id 
+                        'name': amenityName
                     }
                     const requestOptPost = {
                         method: 'POST',
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         },
                         body: JSON.stringify(sendDataAmenity)
                     }
-                    const promise = fetch(url, requestOptPost)
+                    const promise = fetch(urlfull, requestOptPost)
                         .then(response => {
                             if (!response.ok) {
                                 return response.json().then(errorData => {
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(`Hubo un error al asociar una o más amenities. Revisa la consola para más detalles.\n${error.message}`);
                 }
             });
-        }        
+        }
     }
 
     

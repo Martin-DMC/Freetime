@@ -30,10 +30,9 @@ class Place(BaseModel):
     def to_dict(self):
         base = super().to_dict()
         base.update({
+            'id': self.id,
             'title': self.title,
-            'latitude': self.latitude,
-            'longitude': self.longitude,
-            'owner_id': self.owner_id
+            'price': self.price
         })
         return base
 
@@ -42,3 +41,17 @@ class Place(BaseModel):
             'latitude': self.latitude,
             'longitude': self.longitude
         }
+
+    def to_full_info(self):
+        base = super().to_dict()
+        base.update({
+            'title': self.title,
+            'description': self.description,
+            'price': self.price,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'owner': self.owner.to_dict(),
+            'amenities': [a.to_dict() for a in self.amenities],
+            'reviews': [r.to_dict() for r in self.reviews]
+        })
+        return base

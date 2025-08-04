@@ -33,7 +33,8 @@ class ReviewList(Resource):
         place = facade.get_place(review_data['place_id'])
         if not place:
             return {'error': 'Place not found'}, 404
-        if review_data['user_id'] == place['owner_id']:
+        place_owner = place['owner']
+        if review_data['user_id'] == place_owner['id']:
             return {'error': 'no puedes hacer reviews en tu place'}, 400
         try:
             review_data['rating'] = float(str(review_data['rating']).replace(',', '.'))

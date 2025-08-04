@@ -37,7 +37,7 @@ async function loginUser(email, password) {
                 },
                 body: JSON.stringify({ // Convertimos los datos a JSON string
                     email: email,
-                    password: password
+                    contraseña: password
                 })
             });
             const data = await response.json(); // Parseamos la respuesta JSON del servidor
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     first_name: firstName,
                     last_name: lastName,
                     email: email,
-                    password: password
+                    contraseña: password
                 })
             });
             const data = await response.json(); //se parsea la respuesta json del server

@@ -25,6 +25,12 @@ user_model = api.model('User', {
     'contraseña': fields.String(required=True, min_length=6, description='password of the user', validate=validate_email_format)
 })
 
+user_places_model = api.model('UserPlaceList', {
+    'id': fields.String(readOnly=True, description='The unique identifier of the place'),
+    'title': fields.String(required=True, description='Title of the place'),
+    'price': fields.Float(description='Price per night of the place'),
+})
+
 @api.route('/')
 class UserList(Resource):
     @api.expect(user_model, validate=True)
@@ -90,3 +96,25 @@ class UserResource(Resource):
             return {'message': 'User deleted successfully'}, 200
         except ValueError:
             return {'error': 'User not found'}, 404
+
+@api.route('/<string:user_id>/places')
+class UserPlaces(Resource):
+    @jwt_required()
+    @api.marshal_list_with(user_places_model)
+    @api.response(200, 'Places list successfully retrieved')
+    @api.response(401, 'Unauthorized')
+    @api.response(404, 'User not found or user is not the current user')
+    def get(self, user_id):
+        """Devuelve la lista de lugares de un usuario específico."""
+        current_user_id = get_jwt_identity()
+        if current_user_id != user_id:
+            return {'message': 'Unauthorized access'}, 401
+
+        user = facade.get_user(user_id)
+        if not user:
+            return {'message': 'User not found'}, 404
+
+        places = facade.get_places_by_owner_id(user_id)
+
+        return places
+

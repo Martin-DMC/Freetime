@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.reload();               // redirigimos al usuario a la página principal
                 };
             }
-            renderDetails(userId);
+            await renderDetails(userId);
             opcionesFooter();
         } else {
             if (loginLink) {
@@ -103,6 +103,54 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <br>
                                     <fieldset><legend><b>Email: </b></legend><p class="data-api">${user.email}</p></fieldset>
                                 `;
+        }
+        renderPlacesUser(userId);
+    }
+    /*   -#-#-#-#- LOGICA PARA MOSTRAR LOS PLACES DEL USUARIO -#-#-#-#- 
+    ###################################################################*/
+    async function renderPlacesUser(userId) {
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            sectorPlacesUser.innerHTML = '<p>No tienes acceso para ver esta información.</p>';
+            return;
+        }
+        const url = `http://localhost:5000/api/v1/users/${userId}/places`;
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        };
+
+        try {
+            const response = await fetch(url, requestOptions);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+            }
+
+            const places = await response.json();
+            console.log("Datos de lugares recibidos del servidor:", places);
+            
+            // Limpiamos el contenido previo y añadimos el título
+            sectorPlacesUser.innerHTML = `<h4>Tus Places</h4>`;
+
+            if (places && places.length > 0) {
+                const placesHtml = places.map(place => `
+                    <div class="place-card">
+                        <h5>${place.title}</h5>
+                        <p>Precio por noche: $${place.price}</p>
+                        <a href="/places?id=${place.id}">Ver detalles</a>
+                    </div>
+                `).join('');
+                sectorPlacesUser.innerHTML += placesHtml;
+            } else {
+                sectorPlacesUser.innerHTML += '<p>No tienes Places publicados aún.</p>';
+            }
+
+        } catch (error) {
+            console.error('Error al obtener los places del usuario:', error);
+            sectorPlacesUser.innerHTML = `<p class="error-message">Error al cargar tus lugares: ${error.message}</p>`;
         }
     }
     async function opcionesFooter() {

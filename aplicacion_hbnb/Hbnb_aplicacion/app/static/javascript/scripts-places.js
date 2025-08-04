@@ -108,21 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function renderDetalles() {
         const place = await FetchPlacesById(accessToken, placeId);
-
-        if (place === null) {
+        if (place === null || !place) {
             detailShow.innerHTML = '<p class="error-message">No se pudo cargar el lugar.</p>';
             return; // mensaje de error y salimos de la función
         }
         const titleElement = document.createElement('h2');
-        const reviewsSection = document.getElementById('container')
         titleElement.textContent = place.title;
         placesDetails.appendChild(titleElement);
         detailShow.innerHTML = ''; // Limpiamos el contenido previo
 
         const amenitiesList = place.amenities && place.amenities.length > 0 ? place.amenities.map(amenity => amenity.name).join(', ') : 'No amenities listed';
+        const ownerName = place.owner ? `${place.owner.first_name} ${place.owner.last_name}` : 'Anónimo';
 
         detailShow.innerHTML += `
-            <p class="place-owner"><b>Host: </b>${place.owner_id.first_name} ${place.owner_id.last_name}</h5>
+            <p class="place-owner"><b>Host: </b>${ownerName}</h5>
             <p class="place-price"><b>Price per night: </b>$${place.price}</p>
             <p class="place-description"><b>Description: </b>${place.description}</p>
             <p class="amenities"><b>Amenities: </b>${amenitiesList}</p>
@@ -131,10 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
         /*##################################################
         ----------------- LOGICA REVIEWS -------------------
         ####################################################*/
+        const reviewsSection = document.getElementById('container');
         if (place.reviews && place.reviews.length > 0) {
             const listReviews = place.reviews;
             reviewsSection.innerHTML = '';
-            const reviewWithUserName = await Promise.all(listReviews.map(async (review) => {
+            const reviewWithUserName = await Promise.all(place.reviews.map(async (review) => {
                 const userResponse = await fetch(`http://localhost:5000/api/v1/users/${review.user_id}`, requestOptions);
                 const userData = await userResponse.json();
                 return {
@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 const response = await fetch('http://127.0.0.1:5000/api/v1/reviews/', postRequestOption);
                 if (!response.ok) {
+                    const errorData = await response.json();
                     // manejamos la no autorizacion del cliente
                     if (response.status === 401) {
                         console.error('Unauthorized access - invalid token');
@@ -217,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         checkAuthentication(); // volvemos a verificar la autenticación
                         return null;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
                 if (response.ok){
@@ -227,7 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(data.error || 'problemas tecnicos')
                 }
             } catch (error) {
-                alert('No se pudo conectar con el servidor. Verifica tu conexión o la URL de la API.');
+                console.error('Error:', error);
+                // Mostramos el mensaje de error específico que fue lanzado
+                alert(error.message);
             }
         });
     }
