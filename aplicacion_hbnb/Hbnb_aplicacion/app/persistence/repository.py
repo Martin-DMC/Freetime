@@ -102,6 +102,9 @@ class SQLAlchemyRepository(Repository):
             db.session.delete(obj)
             db.session.commit()
 
+    def get_one_by_attribute(self, attr_name, attr_value):
+        return self.model.query.filter(getattr(self.model, attr_name) == attr_value).first()
+
     def get_by_attribute(self, attr_name, attr_value):
         return self.model.query.filter(getattr(self.model, attr_name) == attr_value).all()
     

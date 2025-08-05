@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="place-card">
                         <h5>${place.title}</h5>
                         <p>Precio por noche: $${place.price}</p>
-                        <a href="/places?id=${place.id}">Ver detalles</a>
+                        <a class="link-Place" href="/places?id=${place.id}" data-place-id="${place.id}">Ver detalles</a>
                     </div>
                 `).join('');
                 sectorPlacesUser.innerHTML += placesHtml;
@@ -157,7 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const botonEditar = document.getElementById('botonEditar');
         const dialogEditar = document.getElementById('dialogoEditar');
         const cerrarDialogoEditar = document.getElementById('cerrarDialogoEditar');
-        const formActualizarPerfil = document.getElementById('form-update-perfil')
+        const formActualizarPerfil = document.getElementById('form-update-perfil');
+        const botonActualizarPlace = document.getElementById('actualizarPlace');
+        const dialogoActualizarPlace = document.getElementById('dialogoActualizarPlace');
+        const cerrarFuncionActualizar = document.getElementById('cerrarFuncionActualizar');
+        const cerrarDialogPlace = document.getElementById('cerrarDialogoPlace');
+        const overlay = document.getElementById('overlay');
+
+        let editing = false;
 
         botonEditar.addEventListener('click', () => {
             dialogEditar.showModal();
@@ -210,6 +217,59 @@ document.addEventListener('DOMContentLoaded', () => {
             dialogEditar.close();
             }
         });
+
+        function manejoPlaceLinkClick(event) {
+            const placeId = event.currentTarget.getAttribute('data-place-id');
+
+            if (editing) {
+                event.preventDefault();
+                console.log('Intentando actualizar place');
+                dialogoActualizarPlace.showModal();
+            } else {
+                console.log(`Navegando a los detalles del lugar`);
+            }
+        }
+        botonActualizarPlace.addEventListener('click', () => {
+            editing = true;
+            overlay.style.display = 'block';
+            overlay.classList.add('show');
+            sectorPlacesUser.style.zIndex = 10;
+            sectorPlacesUser.style.backgroundColor = '#fff';
+            sectorPlacesUser.style.boxShadow = '#fff 0 0 10px 3px';
+
+            const linkActualizar = document.querySelectorAll('.link-Place');
+            linkActualizar.forEach(link => {
+                link.textContent = 'Actualizar';
+                link.addEventListener('click', manejoPlaceLinkClick); 
+            });
+        });
+        cerrarFuncionActualizar.addEventListener('click', () => {
+            editing = false;
+            overlay.style.display = 'none';
+            sectorPlacesUser.style.zIndex = 2;
+            sectorPlacesUser.style.backgroundColor = '#fafafa';
+            sectorPlacesUser.style.boxShadow = 'none';
+            const linkActualizar = document.querySelectorAll('.link-Place');
+            linkActualizar.forEach(link => {
+                link.textContent = 'Ver detalles';
+                link.href = `/places?id=${link.getAttribute('data-place-id')}`;
+                });
+        });
+
+        cerrarDialogPlace.addEventListener('click', () => {
+            dialogoActualizarPlace.close();
+            editing = false;
+            overlay.style.display = 'none';
+            sectorPlacesUser.style.zIndex = 2;
+            sectorPlacesUser.style.backgroundColor = '#fafafa';
+            sectorPlacesUser.style.boxShadow = 'none';
+            const linkActualizar = document.querySelectorAll('.link-Place');
+            linkActualizar.forEach(link => {
+                link.textContent = 'Ver detalles';
+                link.href = `/places?id=${link.getAttribute('data-place-id')}`;
+                })
+        });
+
     }
     checkAuthentication();
 });

@@ -20,7 +20,6 @@
                 </section>
                 <br>
                 <section class="places-user" id="places-of-user">
-                    <h4>lista de lugares</h4>
                 </section>
             </div>
             <footer class="footer-info">
@@ -40,10 +39,28 @@
                     </form>
                     <button class="boton-footer" id="cerrarDialogoEditar">Cerrar</button>
                 </dialog>
+                <button class="boton-footer" id="actualizarPlace">actualizar place</button>
+                <dialog class="ventana-emergente" id="dialogoActualizarPlace">
+                    <h2>Actualizar datos del Place</h2>
+                    <form id="form-update-place">
+                        <label class="title-input-update" for="title">Title:</label>
+                        <input class="input-update-data" type="text" id="title" name="title" required placeholder="Title" >
+                        <label class="title-input-update" for="description">Description:</label>
+                        <input class="input-update-data" type="text" id="description" name="description" required placeholder="Description" >
+                        <label class="title-input-update" for="price">Price:</label>
+                        <input class="input-update-data" type="text" id="price" name="price" placeholder="price" >
+                        <label class="title-input-update" for="password">Password:</label>
+                        <input class="input-update-data" type="password" id="password" name="password" placeholder="password">
+                        <button class="boton-footer" id="Actualizarperfil" type="submit">Actualizar</button>
+                    </form>
+                    <button class="boton-footer" id="cerrarDialogoPlace">Cerrar</button>
+                </dialog>
                 <button class="boton-footer">hacer reserva</button>
-                <button class="boton-footer">actualizar place</button>
             </footer>
         </section>
+        <div class="overlay" id="overlay">
+            <button id="cerrarFuncionActualizar">X</button>
+        </div>
     </main>
     {% include "footer.html" %}
     <script src="/static/javascript/scripts-profile.js"></script>
