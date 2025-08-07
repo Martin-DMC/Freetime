@@ -45,13 +45,19 @@
                     <form id="form-update-place">
                         <label class="title-input-update" for="title">Title:</label>
                         <input class="input-update-data" type="text" id="title" name="title" required placeholder="Title" >
-                        <label class="title-input-update" for="description">Description:</label>
-                        <input class="input-update-data" type="text" id="description" name="description" required placeholder="Description" >
                         <label class="title-input-update" for="price">Price:</label>
                         <input class="input-update-data" type="text" id="price" name="price" placeholder="price" >
-                        <label class="title-input-update" for="password">Password:</label>
-                        <input class="input-update-data" type="password" id="password" name="password" placeholder="password">
-                        <button class="boton-footer" id="Actualizarperfil" type="submit">Actualizar</button>
+                        <label class="title-input-update" for="description">Description:</label>
+                        <textarea class="input-update-data" type="text" id="description" name="description" rows="2" required placeholder="Description" ></textarea>
+                        <label class="title-input-update" for="amenityList">Amenities</label>
+                        <div class="ventana-amenity">
+                            <ul class="lista-amenities" id="amenityList">
+                                <li class="lista-items" id="amenityItems">
+                                    <p><span>wifi</span><input type="checkbox" name="amenitisCreadas" id="amenitisCreadas"></p>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="boton-footer" id="ActualizarDataPlace" type="submit">Actualizar</button>
                     </form>
                     <button class="boton-footer" id="cerrarDialogoPlace">Cerrar</button>
                 </dialog>

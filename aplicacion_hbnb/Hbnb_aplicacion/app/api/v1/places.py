@@ -124,7 +124,7 @@ class PlaceResource(Resource):
         update_data = api.payload
 
         # Buscar el lugar por ID
-        place = facade.place_repo.get(place_id)  # ← Es importante que sea el objeto, no un dict
+        place = facade.place_repository.get(place_id)  # ← Es importante que sea el objeto, no un dict
         if place is None:
             return {'error': 'Place not found'}, 404
         
@@ -169,6 +169,24 @@ class PlaceAmenityAssociation(Resource):
             facade.associate_amenity_with_place(place_id, amenity_name)
             return {'message': 'Amenity associated with place'}, 201
 
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except Exception as e:
+            return {'error': str(e)}, 500
+
+    @api.response(204, 'Amenity desassociated successfully')
+    @api.response(404, 'Amenity or Place not found')
+    @jwt_required()
+    def delete(self, place_id):
+        amenity_data = api.payload
+        amenity_name = amenity_data.get('name')
+
+        if not amenity_name:
+            return {'error': 'Amenity name is required'}, 400
+        
+        try:
+            mensaje = facade.desassociate_amenity(place_id, amenity_name)
+            return mensaje, 204
         except ValueError as e:
             return {'error': str(e)}, 404
         except Exception as e:

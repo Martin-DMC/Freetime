@@ -27,6 +27,10 @@ class Place(BaseModel):
         """Add an amenity to the place."""
         self.amenities.append(amenity)
 
+    def remove_amenity(self, amenity):
+        """Add an amenity to the place."""
+        self.amenities.remove(amenity)
+
     def to_dict(self):
         base = super().to_dict()
         base.update({

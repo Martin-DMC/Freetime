@@ -91,6 +91,19 @@ class HBnBFacade:
         place.add_amenity(amenity)
         db.session.commit()
         return place
+    
+    def desassociate_amenity(self, place_id, amenity_name):
+        place = self.place_repository.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+        amenity = self.amenity_repository.get_by_attribute('name', amenity_name)
+        if not amenity:
+            raise ValueError("Amenity not found")
+        
+        place.remove_amenity(amenity)
+        db.session.commit()
+        return {'message': 'No content'}
+
 
     # =================== PLACES ===================
     def create_place(self, place_data):
