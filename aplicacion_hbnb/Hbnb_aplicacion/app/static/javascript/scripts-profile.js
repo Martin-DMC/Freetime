@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectorPlacesUser = document.getElementById('places-of-user');
     const fullNombreUser = document.getElementById('full-name-user');
     let currentEditingPlaceId = null;
+    let currentEditingPlaceData = null;
 
     /*##########################################################
     -------------- LOGICA DE AUTENTICACION ---------------------
@@ -165,12 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const dialogEditar = document.getElementById('dialogoEditar');
         const cerrarDialogoEditar = document.getElementById('cerrarDialogoEditar');
         const formActualizarPerfil = document.getElementById('form-update-perfil');
+        //------------------------------------------------------------------------//
         const botonActualizarPlace = document.getElementById('actualizarPlace');
         const dialogoActualizarPlace = document.getElementById('dialogoActualizarPlace');
         const cerrarFuncionActualizar = document.getElementById('cerrarFuncionActualizar');
         const cerrarDialogPlace = document.getElementById('cerrarDialogoPlace');
         const overlay = document.getElementById('overlay');
         const addAmenitiesToPlace = document.getElementById('addAmenitiesToPlace');
+
         if (addAmenitiesToPlace) {
             addAmenitiesToPlace.addEventListener('click', async () => {
                 // Llama a la función de asociación con el ID almacenado
@@ -242,8 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ------------------------------------------------------------ */
         async function manejoPlaceLinkClick(event) {
             const placeId = event.currentTarget.getAttribute('data-place-id');
-            const botonActualizarInfo = document.getElementById('ActualizarDataPlace');
-
             if (editing) {
                 event.preventDefault();
                 console.log('Intentando actualizar place');
@@ -251,11 +252,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentEditingPlaceId = placeId;
                 const placeData = await editarPlaces(placeId);
                 if (placeData) {
-                    const title = document.getElementById('title').value = placeData.title;
-                    const price = document.getElementById('price').value = placeData.price;
-                    const description = document.getElementById('description').value = placeData.description;
+                    currentEditingPlaceData = placeData;
+                    document.getElementById('title').value = placeData.title;
+                    document.getElementById('price').value = placeData.price;
+                    document.getElementById('description').value = placeData.description;
                     const accessToken = localStorage.getItem('access_token');
-                    await addPlaceAmenities(accessToken, placeId);
+                    await addPlaceAmenities(accessToken, placeId, placeData.amenities);
 
                 }
 
@@ -344,7 +346,11 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Lógica para actualizar los datos del place (título, precio, descripción)
                 const formData = new FormData(formUpdatePlace);
-                const datosParaEnviar = Object.fromEntries(formData.entries());
+                const datosParaEnviar = {
+                    title: formData.get('title'),
+                    price: formData.get('price'),
+                    description: formData.get('description'),
+                };
                                 
                 const urlUpdatePlace = `http://127.0.0.1:5000/api/v1/places/${placeId}`;
                 const response = await fetch(urlUpdatePlace, {
@@ -362,9 +368,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             
                 console.log('Place actualizado exitosamente.');
+
+                // obtengo la lista de amenities del place
+                const existingAmenities = currentEditingPlaceData.amenities;
                 
                 // Lógica para actualizar los amenities
-                await updatePlaceAmenities(accessToken, placeId);
+                await updatePlaceAmenities(accessToken, placeId, existingAmenities);
             
                 alert('¡Place y amenities actualizados exitosamente!');
                 dialogoActualizarPlace.close();
@@ -383,8 +392,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* -#-#-#-#- FUNCION PARA AÑADIR LAS AMENITIES AL PLACE -#-#-#-#- 
     ------------------------------------------------------------------*/
-    async function addPlaceAmenities(accessToken, place_id) {
+    async function addPlaceAmenities(accessToken, place_id, existingAmenities) {
         const amenityList = document.getElementById('amenityList');
+
         const urlAmenities = 'http://127.0.0.1:5000/api/v1/amenities/';
         const requestOptionsGet = {
             method: 'GET',
@@ -394,79 +404,56 @@ document.addEventListener('DOMContentLoaded', () => {
             }   // hasta aca capturamos los elementos y preparamos una peticion para la api
         };
         try {
-            const response = await fetch(urlAmenities, requestOptionsGet);
-            if (!response.ok) { // manejamos la no autorizacion del cliente
-                if (response.status === 401) {
-                    console.error('Unauthorized access - invalid token');
-                    localStorage.removeItem('access_token'); // eliminamos el token de acceso
-                    localStorage.removeItem('user_id'); // eliminamos el id del usuario
-                    checkAuthentication(); // volvemos a verificar la autenticación
-                    return null;
-                }
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const responseAllAmenities = await fetch(urlAmenities, requestOptionsGet);
+
+            if (!responseAllAmenities.ok) {
+                throw new Error(`Error al obtener todas las amenities: ${responseAllAmenities.status}`);
             }
-            const data = await response.json(); // obtenemos las amenities
-            listOfAllAmenities = []; // creamos una lista para guardar los nombre y poder manejar cuando las amenities ya existen
+
+            const allAmenities = await responseAllAmenities.json();
+            const existingAmenityIds = new Set(existingAmenities.map(amenity => amenity.id));
             amenityList.innerHTML = '';
-            data.forEach(amenity => { // mostramos cada amenity dinamicamente
-                listOfAllAmenities.push(amenity.name.toLowerCase());
+            allAmenities.forEach(amenity => {
                 const li = document.createElement('li');
                 li.classList.add('lista-items');
+                const isChecked = existingAmenityIds.has(amenity.id) ? 'checked' : '';
                 li.innerHTML = `
-                        <p>
-                            <span>${amenity.name}</span>
-                            <input type="checkbox" name="amenitisCreadas" id="${amenity.name}">
-                        </p>
+                    <p>
+                        <span>${amenity.name}</span>
+                        <input type="checkbox" name="amenities" value="${amenity.id}" ${isChecked}>
+                    </p>
                 `;
-                amenityList.appendChild(li); // las agregamos al sector donde se deben mostrar
+                amenityList.appendChild(li);
             });
         } catch (error) {
             console.error('Error al obtener amenities:', error);
         }
     }
 
-    async function updatePlaceAmenities(accessToken, placeId) {
+    async function updatePlaceAmenities(accessToken, placeId, existingAmenities) {
     try {
-        // Obtengo la lista de amenities actualmente asociados
-        const urlGetAmenities = `http://127.0.0.1:5000/api/v1/places/${placeId}`;
-        const responseGet = await fetch(urlGetAmenities, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-        });
-        if (!responseGet.ok) {
-                throw new Error(`Error al obtener amenities existentes: ${responseGet.status}`);
-            }
-        const placeData = await responseGet.json();
-        const existingAmenities = placeData['amenities'];
-        const existingAmenityNames = new Set(existingAmenities.map(amenity => amenity.name));
-
-        // Obtengo la lista de amenities seleccionadas
-        const selectedAmenities = new Set();
-        document.querySelectorAll('[name="amenitisCreadas"]:checked').forEach(checkbox => {
-            selectedAmenities.add(checkbox.id);
+        const existingAmenityIds = new Set(existingAmenities.map(amenity => amenity.id));
+        const selectedAmenityIds = new Set();
+        document.querySelectorAll('[name="amenities"]:checked').forEach(checkbox => {
+            selectedAmenityIds.add(checkbox.value);
         });
 
-        // logica para agregar o eliminar asociacion de amenitis
-        const amenitiesToAdd = [...selectedAmenities].filter(name => !existingAmenityNames.has(name));
-        const amenitiesToRemove = [...existingAmenityNames].filter(name => !selectedAmenities.has(name));
+        const amenitiesToAdd = [...selectedAmenityIds].filter(id => !existingAmenityIds.has(id));
+        const amenitiesToRemove = [...existingAmenityIds].filter(id => !selectedAmenityIds.has(id));
 
         const promises = [];
         const urlBase = 'http://127.0.0.1:5000/api/v1/places';
 
-        // peticiones POST para agregar nuevas amenities
-        amenitiesToAdd.forEach(name => {
-            const url = `${urlBase}/${placeId}/amenities`;
+        // Peticiones POST para agregar
+        amenitiesToAdd.forEach(amenityId => {
+            const url = `${urlBase}/${placeId}/amenities/${amenityId}`;
             const promise = fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({'name': name })
+                headers: { 'Authorization': `Bearer ${accessToken}` }
             }).then(response => {
                 if (!response.ok) {
                     return response.json().then(errorData => {
-                            throw new Error(`Error POST al asociar "${name}": ${errorData.message}`);
+                        throw new Error(`Error POST al asociar amenidad con ID "${amenityId}": ${errorData.message}`);
                     });
                 }
                 return response.json();
@@ -474,33 +461,27 @@ document.addEventListener('DOMContentLoaded', () => {
             promises.push(promise);
         });
 
-        // peticiones DELETE para eliminar amenities
-        amenitiesToRemove.forEach(name => {
-            const url = `${urlBase}/${placeId}/amenities`;
+        // Peticiones DELETE para eliminar
+        amenitiesToRemove.forEach(amenityId => {
+            const url = `${urlBase}/${placeId}/amenities/${amenityId}`;
             const promise = fetch(url, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({'name': name })
+                headers: { 'Authorization': `Bearer ${accessToken}` }
             }).then(response => {
                 if (!response.ok) {
                     return response.json().then(errorData => {
-                        throw new Error(`Error DELETE al desasociar "${name}": ${errorData.message}`);
+                        throw new Error(`Error DELETE al desasociar amenidad con ID "${amenityId}": ${errorData.message}`);
                     });
                 }
-                // DELETE generalmente no devuelve un cuerpo, por lo que devolvemos un objeto simple
                 return { message: 'Desasociación exitosa' };
             });
             promises.push(promise);
         });
 
-        // Espero a que todas las promesas se resuelvan
-        await Promise.all(promises);
-        console.log('Amenities actualizadas exitosamente.')
+            await Promise.all(promises);
+            console.log('Amenities actualizadas exitosamente.');
         } catch (error) {
-            console.error('Error al actualizar amenities:', error);
-            throw error;
-        }
+        console.error('Error al actualizar amenities:', error);
+        throw error;
+    }
     }
