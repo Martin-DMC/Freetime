@@ -485,3 +485,51 @@ document.addEventListener('DOMContentLoaded', () => {
         throw error;
     }
     }
+
+
+    /* 
+
+    devo depurar para encontrar el error al asociar o desasociar las amenities del place
+
+    // ... dentro de tu formUpdatePlace.addEventListener
+try {
+    // Lógica para actualizar los datos del place (título, precio, descripción)
+    // ...
+
+    const urlUpdatePlace = `http://172.20.10.2:5000/api/v1/places/${placeId}`;
+    const response = await fetch(urlUpdatePlace, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(datosParaEnviar)
+    });
+
+    // --- CORRECCIÓN CLAVE AQUÍ ---
+    // Clonamos la respuesta para poder usarla si el parseo falla
+    const clonedResponse = response.clone();
+
+    if (!response.ok) {
+        // Intentamos parsear la respuesta solo si el estado es de error (por si devuelve un JSON)
+        try {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `Error del servidor: ${response.status}`);
+        } catch (parseError) {
+            // Si el parseo falla, es porque la respuesta no es un JSON
+            const textError = await clonedResponse.text();
+            console.error('Error no JSON del servidor:', textError);
+            throw new Error(`Error de red o del servidor: ${response.status} - ${textError.substring(0, 50)}...`);
+        }
+    }
+    
+    // Si la respuesta es exitosa, la parseamos sin problemas
+    await response.json(); 
+    console.log('Place actualizado exitosamente.');
+    // ... el resto de tu lógica para actualizar amenities
+    
+} catch (error) {
+    console.error('Error en el proceso de actualización:', error);
+    alert(`Error al actualizar: ${error.message}`);
+}
+ */
