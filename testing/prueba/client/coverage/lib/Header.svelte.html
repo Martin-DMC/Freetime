@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/84</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/84</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -106,92 +106,215 @@
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;script lang="ts"&gt;
-  import { Navbar, DarkMode, NavBrand, NavLi, NavUl, NavHamburger, Avatar,
-    Dropdown, DropdownItem, DropdownHeader, DropdownGroup, } from "flowbite-svelte";
-  //const currentFavicon = $derived($theme === 'dark' ? favicon_light : favicon_dark);
-  import logoDark from "$lib/assets/GitGudStats_logo_dark.svg";
-  import logoLight from "$lib/assets/GitGudStats_logo_light.svg";
-&lt;/script&gt;
-&nbsp;
-&lt;Navbar class="p-5 bg-white dark:bg-amber-50"&gt;
-  &lt;NavBrand href="/"&gt;
-    &lt;img src={logoDark} class="h-6 sm:h-9 dark:hidden" alt="GitGudStats Logo" /&gt;
-    &lt;img src={logoLight} class="h-6 sm:h-9 hidden dark:block" alt="GitGudStats Logo" /&gt;
-    &lt;span class="self-center font-semibold dark:text-fg text-xl whitespace-nowrap ml-3"&gt;GitGudStats&lt;/span&gt;
-  &lt;/NavBrand&gt;
-  &lt;div class="flex items-center md:order-2"&gt;
-    &lt;Avatar
-      id="avatar-menu"
-      src="/user_pfp.jpeg"
-      class="hover:cursor-pointer"
-    /&gt;
-    &lt;!-- &lt;NavHamburger /&gt; This will display the NavUl --&gt;
-  &lt;/div&gt;
-  &lt;DarkMode class="mr-5 ml-auto hover:cursor-pointer"&gt;&lt;/DarkMode&gt;
-  &lt;Dropdown placement="bottom" triggeredBy="#avatar-menu"&gt;
-    &lt;DropdownHeader class="hover:cursor-pointer"&gt;
-      &lt;span class="block text-sm"&gt;Pepe Gutierrez&lt;/span&gt;
-      &lt;span class="block font-medium text-sm truncate"&gt;pepe81&lt;/span&gt;
-    &lt;/DropdownHeader&gt;
-    &lt;DropdownGroup&gt;
-      &lt;DropdownItem&gt;Charts&lt;/DropdownItem&gt;
-      &lt;DropdownItem&gt;Settings&lt;/DropdownItem&gt;
-      &lt;DropdownItem&gt;Legal&lt;/DropdownItem&gt;
-    &lt;/DropdownGroup&gt;
-    &lt;DropdownHeader&gt;Sign out&lt;/DropdownHeader&gt;
-  &lt;/Dropdown&gt;
-  &lt;!-- &lt;NavUl&gt; These are header buttons, leave them just in case you want to reimplement them.
-    &lt;NavLi href="/"&gt;Home&lt;/NavLi&gt;
-    &lt;NavLi href="/about"&gt;About&lt;/NavLi&gt;
-    &lt;NavLi href="/docs/components/navbar"&gt;Navbar&lt;/NavLi&gt;
-    &lt;NavLi href="/pricing"&gt;Pricing&lt;/NavLi&gt;
-    &lt;NavLi href="/contact"&gt;Contact&lt;/NavLi&gt;
-  &lt;/NavUl&gt; --&gt;
-&lt;/Navbar&gt;
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >&lt;script lang="ts"&gt;</span></span></span>
+<span class="cstat-no" title="statement not covered" >  import {</span>
+<span class="cstat-no" title="statement not covered" >    Navbar,</span>
+<span class="cstat-no" title="statement not covered" >    DarkMode,</span>
+<span class="cstat-no" title="statement not covered" >    NavBrand,</span>
+<span class="cstat-no" title="statement not covered" >    NavLi,</span>
+<span class="cstat-no" title="statement not covered" >    NavUl,</span>
+<span class="cstat-no" title="statement not covered" >    NavHamburger,</span>
+<span class="cstat-no" title="statement not covered" >    Avatar,</span>
+<span class="cstat-no" title="statement not covered" >    Dropdown,</span>
+<span class="cstat-no" title="statement not covered" >    DropdownItem,</span>
+<span class="cstat-no" title="statement not covered" >    DropdownHeader,</span>
+<span class="cstat-no" title="statement not covered" >    DropdownGroup,</span>
+<span class="cstat-no" title="statement not covered" >    Button,</span>
+<span class="cstat-no" title="statement not covered" >  } from "flowbite-svelte";</span>
+<span class="cstat-no" title="statement not covered" >  import logoDark from "$lib/assets/GitGudStats_logo_dark.svg";</span>
+<span class="cstat-no" title="statement not covered" >  import logoLight from "$lib/assets/GitGudStats_logo_light.svg";</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  import { isAuth } from "./stores/auth";</span>
+<span class="cstat-no" title="statement not covered" >&lt;/script&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >&lt;Navbar class="bg-header-bg"&gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;NavBrand href="/"&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;img src={logoDark} class="h-6 sm:h-9 dark:hidden" alt="GitGudStats Logo" /&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;img</span>
+<span class="cstat-no" title="statement not covered" >      src={logoLight}</span>
+<span class="cstat-no" title="statement not covered" >      class="h-6 sm:h-9 hidden dark:block"</span>
+<span class="cstat-no" title="statement not covered" >      alt="GitGudStats Logo"</span>
+<span class="cstat-no" title="statement not covered" >    /&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;span class="self-center font-semibold text-xl whitespace-nowrap ml-3"</span>
+<span class="cstat-no" title="statement not covered" >      &gt;GitGudStats&lt;/span</span>
+<span class="cstat-no" title="statement not covered" >    &gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;/NavBrand&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  &lt;DarkMode class="mr-5 ml-auto hover:cursor-pointer"&gt;&lt;/DarkMode&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  {#if $isAuth}</span>
+<span class="cstat-no" title="statement not covered" >    &lt;div class="flex items-center md:order-2 hover:cursor-pointer"&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;!-- &lt;Avatar id="avatar-menu" src="/user_pfp.jpeg" class="hover:cursor-pointer"/&gt; --&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;Avatar</span>
+<span class="cstat-no" title="statement not covered" >      id="avatar-menu"</span>
+<span class="cstat-no" title="statement not covered" >      src="https://media.licdn.com/dms/image/v2/D4D03AQEKpb81QDXHgA/profile-displayphoto-shrink_200_200/B4DZTWbbvcGkAc-/0/1738764305144?e=2147483647&amp;v=beta&amp;t=uwplIo_d4M5Ho0q3udJV5LJ7UbzigeT8zyRthdKEQ9M"</span>
+<span class="cstat-no" title="statement not covered" >      border size="sm" class="focus:ring-primary-500 dark:focus:ring-primary-500 dark:bg-black" /&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;Dropdown placement="bottom" triggeredBy="#avatar-menu"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;DropdownHeader class="hover:cursor-pointer"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;span class="block text-sm"&gt;Pepe Gutierrez&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;span class="block font-medium text-sm truncate"&gt;pepe81&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/DropdownHeader&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;DropdownGroup&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;DropdownItem&gt;Charts&lt;/DropdownItem&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;DropdownItem&gt;Settings&lt;/DropdownItem&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;DropdownItem&gt;Legal&lt;/DropdownItem&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/DropdownGroup&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;DropdownHeader&gt;Sign out&lt;/DropdownHeader&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;/Dropdown&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;!-- &lt;NavHamburger /&gt; This will display the NavUl --&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >  {/if}</span>
+<span class="cstat-no" title="statement not covered" >  {#if !$isAuth}</span>
+<span class="cstat-no" title="statement not covered" >    &lt;a href="/login"&gt; &lt;Button outline&gt;LOGIN&lt;/Button&gt;&lt;/a&gt;</span>
+<span class="cstat-no" title="statement not covered" >  {/if}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  &lt;!-- From here to bottom are some useful stuff for maybe later --&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  &lt;!-- &lt;NavUl&gt; These are header buttons, leave them just in case you want to reimplement them.</span>
+<span class="cstat-no" title="statement not covered" >    &lt;NavLi href="/"&gt;Home&lt;/NavLi&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;NavLi href="/about"&gt;About&lt;/NavLi&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;NavLi href="/docs/components/navbar"&gt;Navbar&lt;/NavLi&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;NavLi href="/pricing"&gt;Pricing&lt;/NavLi&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;NavLi href="/contact"&gt;Contact&lt;/NavLi&gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;/NavUl&gt; --&gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;!-- &lt;Dropdown placement="bottom" triggeredBy="#avatar-menu"&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;DropdownHeader class="hover:cursor-pointer"&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;span class="block text-sm"&gt;Pepe Gutierrez&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;span class="block font-medium text-sm truncate"&gt;pepe81&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;/DropdownHeader&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;DropdownGroup&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;DropdownItem&gt;Charts&lt;/DropdownItem&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;DropdownItem&gt;Settings&lt;/DropdownItem&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;DropdownItem&gt;Legal&lt;/DropdownItem&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;/DropdownGroup&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;DropdownHeader&gt;Sign out&lt;/DropdownHeader&gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;/Dropdown&gt; --&gt;</span>
+<span class="cstat-no" title="statement not covered" >&lt;/Navbar&gt;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -199,7 +322,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-24T17:55:17.206Z
+                at 2025-09-29T18:36:01.644Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -1,13 +1,16 @@
 <script lang="ts">
     // import { theme } from '$lib/stores/theme';
+    // import { Sidebar } from "$lib/Sidebar.svelte";
+    import PieChart from "$lib/PieChart.svelte";
 </script>
 
-<section id="main-wrapper">
-    <h1>Hello</h1>
-</section>
+<PieChart/>
 
 <style>
-    #main-wrapper {
-        min-height: 95dvh;
-    }
+    /* #main-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: 1px solid red;
+    } */
 </style>

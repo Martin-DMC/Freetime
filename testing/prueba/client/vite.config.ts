@@ -22,7 +22,7 @@ export default defineConfig({
             include:['src/**/*.{svelte,js,ts}']
         },
         // workspace settings
-        workspace:[
+        projects:[
             {
                 extends: true,
                 plugins:[svelteTesting()],

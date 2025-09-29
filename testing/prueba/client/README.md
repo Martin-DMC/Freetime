@@ -70,3 +70,20 @@ Example (Tailwind token usage)
   Theme is {$theme}
 </div>
 ```
+
+## Constants
+
+This project uses centralized constants for things like language colors and other shared values to keep the codebase organized and maintainable.
+
+### Language Colors
+
+The mapping of programming languages to their representative colors is stored in:
+
+- **Location:** `src/lib/constants/languageColors.ts`
+- **Export:** `langColors (Record<string, string>)`
+
+**Usage Example:**
+```ts
+import { langColors } from '$lib/constants/langColors';
+
+const pythonColor = langColors['Python']; // "#3572A5"

@@ -14,4 +14,17 @@ Object.defineProperty(window, 'matchMedia', {
         dispatchEvent: vi.fn(),
     })),
 })
+
 // add more mocks here if you need them
+
+// Mock global de animate para JSDOM
+if (!Element.prototype.animate) {
+  Element.prototype.animate = () => ({
+    finished: Promise.resolve(),
+    cancel: () => {},
+    play: () => {},
+    pause: () => {},
+    reverse: () => {},
+    commitStyles: () => {}
+  }) as unknown as Animation;
+}

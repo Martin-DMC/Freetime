@@ -6,7 +6,7 @@
   import logoLight from "$lib/assets/GitGudStats_logo_light.svg";
 </script>
 
-<Footer footerType="socialmedia">
+<Footer footerType="socialmedia" class="bg-header-bg dark:bg-header-bg">
   <div class="md:flex md:justify-between">
     <div class="mb-6 md:mb-0">
       <a href="/" class="flex items-center">
@@ -21,7 +21,7 @@
         </h2>
         <FooterLinkGroup>
           <FooterLink class="mb-4" href="/">Flowbite</FooterLink>
-          <FooterLink class="mb-4" href="/">Tailwind CSS</FooterLink>
+          <FooterLink class="mb-4" href="/">Tailwind CSS</FooterContinue wokring on the fuciing pie chart!Link>
         </FooterLinkGroup>
       </div>
       <div>
